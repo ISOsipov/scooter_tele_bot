@@ -1243,7 +1243,7 @@ def main_excursion(message):
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
     all_excursions[message.chat.id] = database.child('blocks').child(message.text).get()
     enter_lang = 0
-    langs = 0
+    langs = []
     text = ""
     if all_excursions[message.chat.id]:
         # Проходим по каждому языковому разделу
@@ -1271,37 +1271,38 @@ def main_excursion(message):
                 bot.send_message(message.chat.id, text=text, reply_markup=markup)
             else:
                 if lang == "English":
-                    langs = 2
-                    break
+                    langs.append(2)
                 elif lang == "Spanish":
-                    langs = 1
+                    langs.append(1)
+                elif lang == "Russian":
+                    langs.append(0)
 
         if enter_lang == 0:
             if language[message.chat.id] == "spanish":
                 button1 = types.KeyboardButton("Volver a la selección de idioma")
                 button2 = types.KeyboardButton("Ir al recorrido")
-                if langs == 2:
+                if 2 in langs:
                     all_excursions[message.chat.id] = all_excursions[message.chat.id]['English']
                     text ="Lo sentimos, pero parece que tu recorrido no está disponible en tu idioma. Te redirigiremos automáticamente al inglés. Si tiene alguna pregunta, comuníquese con su guía. Para continuar, utilice los botones en la parte inferior de la pantalla.\n¡Le pedimos disculpas!"
-                elif langs == 0:
+                elif 0 in langs:
                     all_excursions[message.chat.id] = all_excursions[message.chat.id]['Russian']
                     text ="Lo sentimos, pero parece que tu recorrido no está disponible en tu idioma. Te redirigiremos automáticamente al ruso. Si tiene alguna pregunta, comuníquese con su guía. Para continuar, utilice los botones en la parte inferior de la pantalla.\n¡Le pedimos disculpas!"
             elif language[message.chat.id] == "english":
                 button1 = types.KeyboardButton("Return to language selection")
                 button2 = types.KeyboardButton("Go to the tour")
-                if langs == 1:
+                if 1 in langs:
                     all_excursions[message.chat.id] = all_excursions[message.chat.id]['Spanish']
                     text = "We're sorry, but it looks like your tour is not available in your language. We'll automatically redirect you to Spanish. For any questions, please contact your tour guide. To continue, use the buttons at the bottom of the screen.\nWe apologize!"
-                elif langs == 0:
+                elif 0 in langs:
                     all_excursions[message.chat.id] = all_excursions[message.chat.id]['Russian']
                     text = "We are sorry, but it seems that your tour is not available in your language. We will automatically redirect you to Russian. For any questions, please contact the guide. To continue, use the buttons at the bottom of the screen.\nWe apologize!"
             elif language[message.chat.id] == "russian":
                 button1 = types.KeyboardButton("Вернуться к выбору языка")
                 button2 = types.KeyboardButton("Перейти к экскурсии")
-                if langs == 2:
+                if 2 in langs:
                     all_excursions[message.chat.id] = all_excursions[message.chat.id]['English']
                     text = "Сожалеем, но похоже ваш тур не доступен на вашем языке. Мы автоматически перенаправляем вас на английский язык. По всем вопросам, пожалуйста, обращайтесь к гиду. Чтобы продолжить, используйте кнопки внизу экрана.\nПриносим свои извинения!"
-                elif langs == 1:
+                elif 1 in langs:
                     all_excursions[message.chat.id] = all_excursions[message.chat.id]['Spanish']
                     text = "Сожалеем, но похоже ваш тур не доступен на вашем языке. Мы автоматически перенаправляем вас на испанский язык. По всем вопросам, пожалуйста, обращайтесь к гиду. Чтобы продолжить, используйте кнопки внизу экрана.\nПриносим свои извинения!"
             markup.row(button2)
