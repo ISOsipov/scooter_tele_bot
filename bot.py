@@ -15,7 +15,7 @@ import json
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
-cred = credentials.Certificate(os.getenv("FIREBASE_CREDENTIALS_PATH"))
+cred = credentials.Certificate("privKey/tours-in-buenos-aires-firebase-adminsdk-yqt2b-5f2d7a4242.json")
 firebase_admin.initialize_app(cred, {
     'databaseURL': 'https://tours-in-buenos-aires-default-rtdb.firebaseio.com',
     'storageBucket': 'stours-in-buenos-aires.appspot.com'
